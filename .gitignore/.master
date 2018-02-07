@@ -1,0 +1,573 @@
+"""
+update 20180108
+
+"""
+
+
+from tkinter import *
+
+root = Tk()
+
+def ratings():
+
+    try:
+        total_asset = float(total_asset_entry.get())
+        total_liability = float(total_liability_entry.get())
+        long_term_debt = float(long_term_debt_entry.get())
+        debt_payable = float(debt_payable_entry.get())
+        short_term_debt = float(short_term_debt_entry.get())
+        nc_debt_mature_oneyear = float(nc_debt_mature_oneyear_entry.get())
+        operating_cashflow = float(operating_cashflow_entry.get())
+        liquidity_asset = float(liquidity_asset_entry.get())
+        liquidity_liability = float(liquidity_liability_entry.get())
+        inventory = float(inventory_entry.get())
+        operating_revenue = float(operating_revenue_entry.get())
+        operating_cost = float(operating_cost_entry.get())
+        profit = float(profit_entry.get())
+        total_asset_lastyear = float(total_asset_lastyear_entry.get())
+        #n15 = float(e15.get())
+        nc_asset = float(nc_asset_entry.get())
+        equity = float(equity_entry.get())
+        nc_liability = float(nc_liability_entry.get())
+        account_receivable = float(account_receivable_entry.get())
+        inventory_lastyear = float(inventory_lastyear_entry.get())
+        revenue_lastyear = float(revenue_lastyear_entry.get())
+        #n22 = float(e22.get())
+        profit_lastyear = float(profit_lastyear_entry.get())
+        equity_lastyear = float(equity_lastyear_entry.get())
+        account_receivable_lastyear = float(account_receivable_lastyear_entry.get())
+        cashflow = float(cashflow_entry.get())
+        cashflow_lastyear = float(cashflow_lastyear_entry.get())
+
+    except ValueError:
+        l_blank1['text'] = '请输入数字'
+
+
+    leverage_ratio = total_liability/total_asset
+    interest_debt_ratio = (long_term_debt+debt_payable+short_term_debt+nc_debt_mature_oneyear)/total_asset
+    oct_to_tl = operating_cashflow/total_liability
+    liquidity_ratio = liquidity_asset/liquidity_liability
+    quick_ratio = (liquidity_asset-inventory)/liquidity_liability
+    operating_profit_margin = (operating_revenue-operating_cost)/operating_revenue
+    roa = profit/((total_asset_lastyear+total_asset)/2)
+    roe = profit/((equity+equity_lastyear)/2)
+    nca_ratio = nc_asset/(equity+nc_liability)
+    ar_turnover = operating_revenue/((account_receivable+account_receivable_lastyear)/2)
+    inventory_turnover = operating_cost/((inventory+inventory_lastyear)/2)
+    revenue_increase_rate = (operating_revenue-revenue_lastyear)/abs(revenue_lastyear)
+    profit_increase_rate = (profit-profit_lastyear)/abs(profit_lastyear)
+    equity_increase_rate = (equity-equity_lastyear)/equity_lastyear
+
+    # calculation
+    if leverage_ratio < 0.42:
+        leverage_ratio_score = 16
+    elif leverage_ratio < 0.45:
+        leverage_ratio_score = 15
+    elif leverage_ratio < 0.48:
+        leverage_ratio_score = 14
+    elif leverage_ratio < 0.51:
+        leverage_ratio_score = 13
+    elif leverage_ratio < 0.54:
+        leverage_ratio_score = 12
+    elif leverage_ratio < 0.57:
+        leverage_ratio_score = 11
+    elif leverage_ratio < 0.6:
+        leverage_ratio_score = 10
+    elif leverage_ratio < 0.63:
+        leverage_ratio_score = 9
+    elif leverage_ratio < 0.66:
+        leverage_ratio_score = 8
+    elif leverage_ratio < 0.69:
+        leverage_ratio_score = 7
+    elif leverage_ratio < 0.72:
+        leverage_ratio_score = 6
+    elif leverage_ratio < 0.75:
+        leverage_ratio_score = 5
+    elif leverage_ratio < 0.78:
+        leverage_ratio_score = 4
+    elif leverage_ratio < 0.81:
+        leverage_ratio_score = 3
+    elif leverage_ratio < 0.84:
+        leverage_ratio_score = 2
+    elif leverage_ratio < 0.87:
+        leverage_ratio_score = 1
+    else:
+        leverage_ratio_score = 0
+
+    if interest_debt_ratio > 0.57:
+        interest_debt_ratio_score = 0
+    elif interest_debt_ratio > 0.5:
+        interest_debt_ratio_score = 1
+    elif interest_debt_ratio > 0.43:
+        interest_debt_ratio_score = 2
+    elif interest_debt_ratio > 0.36:
+        interest_debt_ratio_score = 3
+    elif interest_debt_ratio > 0.29:
+        interest_debt_ratio_score = 4
+    elif interest_debt_ratio > 0.22:
+        interest_debt_ratio_score = 5
+    elif interest_debt_ratio > 0.15:
+        interest_debt_ratio_score = 6
+    else:
+        interest_debt_ratio_score = 7
+
+    if oct_to_tl <= -0.12:
+        oct_to_tl_score = 0
+    elif oct_to_tl < -0.09:
+        oct_to_tl_score = 1
+    elif oct_to_tl < -0.06:
+        oct_to_tl_score = 2
+    elif oct_to_tl < -0.03:
+        oct_to_tl_score = 3
+    elif oct_to_tl < 0:
+        oct_to_tl_score = 4
+    elif oct_to_tl < 0.03:
+        oct_to_tl_score = 5
+    elif oct_to_tl < 0.06:
+        oct_to_tl_score = 6
+    elif oct_to_tl < 0.09:
+        oct_to_tl_score = 7
+    else:
+        oct_to_tl_score = 8
+
+    if liquidity_ratio > 5:
+        liquidity_ratio_score = 5
+    elif liquidity_ratio > 3.9:
+        liquidity_ratio_score = 4
+    elif liquidity_ratio > 2.8:
+        liquidity_ratio_score = 3
+    elif liquidity_ratio > 1.7:
+        liquidity_ratio_score = 2
+    elif liquidity_ratio > 0.6:
+        liquidity_ratio_score = 1
+    else:
+        liquidity_ratio_score = 0
+
+    if quick_ratio > 3.8:
+        quick_ratio_score = 8
+    elif quick_ratio > 3.3:
+        quick_ratio_score = 7
+    elif quick_ratio > 2.8:
+        quick_ratio_score = 6
+    elif quick_ratio > 2.3:
+        quick_ratio_score = 5
+    elif quick_ratio > 1.8:
+        quick_ratio_score = 4
+    elif quick_ratio > 1.3:
+        quick_ratio_score = 3
+    elif quick_ratio > 0.8:
+        quick_ratio_score = 2
+    elif quick_ratio > 0.3:
+        quick_ratio_score = 1
+    else:
+        quick_ratio_score = 0
+
+    if operating_profit_margin > 0.45:
+        operating_profit_margin_score = 6
+    elif operating_profit_margin > 0.37:
+        operating_profit_margin_score = 5
+    elif operating_profit_margin > 0.29:
+        operating_profit_margin_score = 4
+    elif operating_profit_margin > 0.21:
+        operating_profit_margin_score = 3
+    elif operating_profit_margin > 0.13:
+        operating_profit_margin_score = 2
+    elif operating_profit_margin > 0.05:
+        operating_profit_margin_score = 1
+    else:
+        operating_profit_margin_score = 0
+
+    if roa > 0.026:
+        roa_score = 8
+    elif roa > 0.023:
+        roa_score = 7
+    elif roa > 0.02:
+        roa_score = 6
+    elif roa > 0.017:
+        roa_score = 5
+    elif roa > 0.014:
+        roa_score = 4
+    elif roa > 0.011:
+        roa_score = 3
+    elif roa > 0.008:
+        roa_score = 2
+    elif roa > 0.005:
+        roa_score = 1
+    else:
+        roa_score = 0
+
+    if roe <= 0:
+        roe_score = 0
+    elif roe < 0.02:
+        roe_score = 1
+    elif roe < 0.04:
+        roe_score = 2
+    elif roe < 0.04:
+        roe_score = 3
+    elif roe < 0.06:
+        roe_score = 4
+    else:
+        roe_score = 5
+
+    if nca_ratio > 1.15:
+        nca_ratio_score = 0
+    elif nca_ratio > 1.05:
+        nca_ratio_score = 1
+    elif nca_ratio > 0.95:
+        nca_ratio_score = 2
+    elif nca_ratio > 0.85:
+        nca_ratio_score = 3
+    elif nca_ratio > 0.75:
+        nca_ratio_score = 4
+    else:
+        nca_ratio_score = 5
+
+    if ar_turnover > 10:
+        ar_turnover_score = 6
+    elif ar_turnover > 8.1:
+        ar_turnover_score = 5
+    elif ar_turnover > 6.2:
+        ar_turnover_score = 4
+    elif ar_turnover > 4.3:
+        ar_turnover_score = 3
+    elif ar_turnover > 2.4:
+        ar_turnover_score = 2
+    elif ar_turnover > 0.5:
+        ar_turnover_score = 1
+    else:
+        ar_turnover_score = 0
+
+    if inventory_turnover > 3.9:
+        inventory_turnover_score = 6
+    elif inventory_turnover > 3.15:
+        inventory_turnover_score = 5
+    elif inventory_turnover > 2.4:
+        inventory_turnover_score = 4
+    elif inventory_turnover > 1.65:
+        inventory_turnover_score = 3
+    elif inventory_turnover > 0.9:
+        inventory_turnover_score = 2
+    elif inventory_turnover > 0.15:
+        inventory_turnover_score = 1
+    else:
+        inventory_turnover_score = 0
+
+    if revenue_increase_rate > 0.48:
+        revenue_increase_rate_score = 8
+    elif revenue_increase_rate > 0.41:
+        revenue_increase_rate_score = 7
+    elif revenue_increase_rate > 0.34:
+        revenue_increase_rate_score = 6
+    elif revenue_increase_rate > 0.27:
+        revenue_increase_rate_score = 5
+    elif revenue_increase_rate > 0.2:
+        revenue_increase_rate_score = 4
+    elif revenue_increase_rate > 0.13:
+        revenue_increase_rate_score = 3
+    elif revenue_increase_rate > 0.06:
+        revenue_increase_rate_score = 2
+    elif revenue_increase_rate > -0.01:
+        revenue_increase_rate_score = 1
+    else:
+        revenue_increase_rate_score = 0
+
+    if profit_increase_rate > 0.175:
+        profit_increase_rate_score = 8
+    elif profit_increase_rate > 0.15:
+        profit_increase_rate_score = 7
+    elif profit_increase_rate > 0.125:
+        profit_increase_rate_score = 6
+    elif profit_increase_rate > 0.1:
+        profit_increase_rate_score = 5
+    elif profit_increase_rate > 0.075:
+        profit_increase_rate_score = 4
+    elif profit_increase_rate > 0.05:
+        profit_increase_rate_score = 3
+    elif profit_increase_rate > 0.025:
+        profit_increase_rate_score = 2
+    elif profit_increase_rate > 0:
+        profit_increase_rate_score = 1
+    else:
+        profit_increase_rate_score = 0
+
+    if equity_increase_rate > 0.42:
+        equity_increase_rate_score = 4
+    elif equity_increase_rate > 0.28:
+        equity_increase_rate_score = 3
+    elif equity_increase_rate > 0.14:
+        equity_increase_rate_score = 2
+    elif equity_increase_rate > 0:
+        equity_increase_rate_score = 1
+    else:
+        equity_increase_rate_score = 0
+
+    sum_score = leverage_ratio_score+inventory_turnover_score+oct_to_tl_score+liquidity_ratio_score+quick_ratio_score+operating_profit_margin_score+roa_score+roe_score+nca_ratio_score+ar_turnover_score+inventory_turnover_score+revenue_increase_rate_score+profit_increase_rate_score+equity_increase_rate_score+interest_debt_ratio_score
+
+    # Adjustment
+
+    if profit < 0 and profit_lastyear < 0:
+        adjust_profit = 49.99
+    elif profit < 0:
+        adjust_profit = 59.99
+    else:
+        adjust_profit = sum_score
+
+    if cashflow < 0 and cashflow_lastyear < 0:
+        adjust_cashflow = 44.99
+    elif cashflow < 0:
+        adjust_cashflow = 59.99
+    else:
+        adjust_cashflow = sum_score
+
+    if adjust_profit < adjust_cashflow:
+        score = adjust_profit
+    else:
+        score = adjust_cashflow
+
+    sum_score_show['text'] = score
+
+    if score >= 75:
+        rating_show_label['text'] = 'AAA'
+    elif score >= 70:
+        rating_show_label['text'] = 'AA'
+    elif score >= 60:
+        rating_show_label['text'] = 'A'
+    elif score >= 55:
+        rating_show_label['text'] = 'BBB'
+    elif score >= 50:
+        rating_show_label['text'] = 'B'
+    elif score >= 45:
+        rating_show_label['text'] = 'B'
+    elif score >= 40:
+        rating_show_label['text'] = "CCC"
+    elif score >= 35:
+        rating_show_label['text'] = 'CC'
+    elif score >= 30:
+        rating_show_label['text'] = 'C'
+    else:
+        rating_show_label['text'] = 'D'
+
+    ability_serve_debt_show['text'] = (leverage_ratio_score+interest_debt_ratio_score+oct_to_tl_score+liquidity_ratio_score+quick_ratio_score)/44
+    profit_ability_show['text'] = (operating_profit_margin_score+roa_score+roe_score)/19
+    operation_ability_show['text'] = (nca_ratio_score+ar_turnover_score+inventory_turnover_score)/17
+    development_ability_show['text'] = (revenue_increase_rate_score+profit_increase_rate_score+equity_increase_rate_score)/20
+
+
+# the first row, includng 4 inputs
+# Asset Liability Statement
+asset_liability_label = Label(root, text='资产负债表')
+asset_liability_label.grid(row=2, column=0, sticky=W)
+asset_liability_label2 = Label(root, text='前一期为上一季度')
+asset_liability_label2.grid(row=2, column=1, sticky=W)
+
+
+total_asset_label = Label(root, text='资产合计')
+total_asset_label.grid(row=3, column=0, sticky=W)
+total_asset_entry = Entry(root)
+total_asset_entry.grid(row=3, column=1, sticky=W)
+
+total_liability_label = Label(root, text='负债合计')
+total_liability_label.grid(row=3, column=2, sticky=W)
+total_liability_entry = Entry(root)
+total_liability_entry.grid(row=3, column=3, sticky=W)
+
+long_term_debt_label = Label(root, text='长期借款')
+long_term_debt_label.grid(row=3, column=4, sticky=W)
+long_term_debt_entry = Entry(root)
+long_term_debt_entry.grid(row=3, column=5, sticky=W)
+
+debt_payable_label = Label(root, text='应付债券')
+debt_payable_label.grid(row=4, column=0, sticky=W)
+debt_payable_entry = Entry(root)
+debt_payable_entry.grid(row=4, column=1, sticky=W)
+
+short_term_debt_label = Label(root, text='短期借贷')
+short_term_debt_label.grid(row=4, column=2, sticky=W)
+short_term_debt_entry = Entry(root)
+short_term_debt_entry.grid(row=4, column=3, sticky=W)
+
+nc_debt_mature_oneyear_label = Label(root, text='一年内到期的非流动负债')
+nc_debt_mature_oneyear_label.grid(row=4, column=4, sticky=W)
+nc_debt_mature_oneyear_entry = Entry(root)
+nc_debt_mature_oneyear_entry.grid(row=4, column=5, sticky=W)
+
+liquidity_asset_label = Label(root, text='流动资产合计')
+liquidity_asset_label.grid(row=5, column=0, sticky=W)
+liquidity_asset_entry = Entry(root)
+liquidity_asset_entry.grid(row=5, column=1, sticky=W)
+
+liquidity_liability_label = Label(root, text='流动负债合计')
+liquidity_liability_label.grid(row=5, column=2, sticky=W)
+liquidity_liability_entry = Entry(root)
+liquidity_liability_entry.grid(row=5, column=3, sticky=W)
+
+inventory_label = Label(root, text='存货')
+inventory_label.grid(row=5, column=4, sticky=W)
+inventory_entry = Entry(root)
+inventory_entry.grid(row=5, column=5, sticky=W)
+
+account_receivable_label = Label(root, text='应收账款')
+account_receivable_label.grid(row=6, column=0, sticky=W)
+account_receivable_entry = Entry(root)
+account_receivable_entry.grid(row=6, column=1, sticky=W)
+
+nc_asset_label = Label(root, text='非流动资产合计')
+nc_asset_label.grid(row=6, column=2, sticky=W)
+nc_asset_entry = Entry(root)
+nc_asset_entry.grid(row=6, column=3, sticky=W)
+
+equity_label = Label(root, text='所有者权益合计')
+equity_label.grid(row=6, column=4, sticky=W)
+equity_entry = Entry(root)
+equity_entry.grid(row=6, column=5, sticky=W)
+
+nc_liability_label = Label(root, text='非流动负债合计')
+nc_liability_label.grid(row=7, column=0, sticky=W)
+nc_liability_entry = Entry(root)
+nc_liability_entry.grid(row=7, column=1, sticky=W)
+
+total_asset_lastyear_label = Label(root, text='上期资产合计')
+total_asset_lastyear_label.grid(row=7, column=2, sticky=W)
+total_asset_lastyear_entry = Entry(root)
+total_asset_lastyear_entry.grid(row=7, column=3, sticky=W)
+
+inventory_lastyear_label = Label(root, text='上期存货')
+inventory_lastyear_label.grid(row=7, column=4, sticky=W)
+inventory_lastyear_entry = Entry(root)
+inventory_lastyear_entry.grid(row=7, column=5, sticky=W)
+
+equity_lastyear_label = Label(root, text='上期所有者权益合计')
+equity_lastyear_label.grid(row=8, column=0, sticky=W)
+equity_lastyear_entry = Entry(root)
+equity_lastyear_entry.grid(row=8, column=1, sticky=W)
+
+account_receivable_lastyear_label = Label(root, text="上期应收账款")
+account_receivable_lastyear_label.grid(row=8, column=2, sticky=W)
+account_receivable_lastyear_entry = Entry(root)
+account_receivable_lastyear_entry.grid(row=8, column=3, sticky=W)
+
+l_blank2 = Label(root, text='')
+l_blank2.grid(row=9, column=0, sticky=W)
+
+# Cash Flow Statement
+cash_flow_statement_label = Label(root, text='现金流表')
+cash_flow_statement_label.grid(row=10, column=0, sticky=W)
+cash_flow_statement_label2 = Label(root, text='上一期为上一年同期')
+cash_flow_statement_label.grid(row=10, column=1, sticky=W)
+
+operating_cashflow_label = Label(root, text='经营活动产生的现金流量净额')
+operating_cashflow_label.grid(row=11, column=0, sticky=W)
+operating_cashflow_entry = Entry(root)
+operating_cashflow_entry.grid(row=11, column=1, sticky=W)
+
+cashflow_label = Label(root, text='现金及现金等价物净增加额')
+cashflow_label.grid(row=11, column=2, sticky=W)
+cashflow_entry = Entry(root)
+cashflow_entry.grid(row=11, column=3, sticky=W)
+
+cashflow_lastyear_label = Label(root, text='上期现金及现金等价物净增加额')
+cashflow_lastyear_label.grid(row=11, column=4, sticky=W)
+cashflow_lastyear_entry = Entry(root)
+cashflow_lastyear_entry.grid(row=11, column=5, sticky=W)
+
+l_blank3 = Label(root, text='')
+l_blank3.grid(row=12, column=0, sticky=W)
+
+# Revenue Statement
+revenue_statement_label = Label(root, text='利润表')
+revenue_statement_label.grid(row=13, column=0, sticky=W)
+revenue_statement_label2 = Label(root, text='上一期为上一年同期')
+revenue_statement_label.grid(row=13, column=1, sticky=W)
+
+operating_revenue_label = Label(root, text='营业收入')
+operating_revenue_label.grid(row=14, column=0, sticky=W)
+operating_revenue_entry = Entry(root)
+operating_revenue_entry.grid(row=14, column=1, sticky=W)
+
+operating_cost_label = Label(root, text = '营业成本')
+operating_cost_label.grid(row=14, column=2, sticky=W)
+operating_cost_entry = Entry(root)
+operating_cost_entry.grid(row=14, column=3, sticky=W)
+
+profit_label = Label(root, text='净利润')
+profit_label.grid(row=14, column=4, sticky=W)
+profit_entry = Entry(root)
+profit_entry.grid(row=14, column=5, sticky=W)
+
+revenue_lastyear_label = Label(root, text='上期营业收入')
+revenue_lastyear_label.grid(row=15, column=0, sticky=W)
+revenue_lastyear_entry = Entry(root)
+revenue_lastyear_entry.grid(row=15, column=1, sticky=W)
+
+profit_lastyear_label = Label(root, text='上期净利润')
+profit_lastyear_label.grid(row=15, column=2, sticky=W)
+profit_lastyear_entry = Entry(root)
+profit_lastyear_entry.grid(row=15, column=3, sticky=W)
+
+
+l_blank1 = Label(root, text='')
+l_blank1.grid(row=16, column=0, sticky=W)
+
+button_cal = Button(root, text='计算', command=ratings)
+button_cal.grid(row=17, column=5)
+
+sum_score_label = Label(root, text='总分： ')
+sum_score_label.grid(row=18, column=0, sticky=W)
+sum_score_show = Label(root, text='')
+sum_score_show.grid(row=18, column=1, sticky=W)
+
+rating_label = Label(root, text='评级结果：')
+rating_label.grid(row=18, column=2, sticky=W)
+rating_show_label = Label(root, text='')
+rating_show_label.grid(row=18, column=3, sticky=W)
+
+l_blank4 = Label(root, text='')
+l_blank4.grid(row=19, column=0, sticky=W)
+
+ability_serve_debt_label = Label(root, text='偿债能力')
+ability_serve_debt_label.grid(row=20, column=0, sticky=W)
+ability_serve_debt_show = Label(root, text='')
+ability_serve_debt_show.grid(row=20, column=1, sticky=W)
+
+profit_ability_label = Label(root, text='获利能力')
+profit_ability_label.grid(row=21, column=0, sticky=W)
+profit_ability_show = Label(root, text='')
+profit_ability_show.grid(row=21, column=1, sticky=W)
+
+operation_ability_label = Label(root, text='经营管理能力')
+operation_ability_label.grid(row=22, column=0, sticky=W)
+operation_ability_show = Label(root, text='')
+operation_ability_show.grid(row=22, column=1, sticky=W)
+
+development_ability_label = Label(root, text='发展能力')
+development_ability_label.grid(row=23, column=0, sticky=W)
+development_ability_show = Label(root, text='')
+development_ability_show.grid(row=23, column=1, sticky=W)
+
+l_blank5 = Label(root, text='')
+l_blank5.grid(row= 24, column=0)
+
+
+root.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
